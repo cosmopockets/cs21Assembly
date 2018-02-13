@@ -1,10 +1,12 @@
-;Program Desc:		
+;Program Description:		
 ;Author:			Joel Vazquez
 ;Creation Date:		
 ;Revisions:			
 ;Date:				
 ;Operating Sys:		Linux Mint
-;IDE/Compiler		
+;IDE/Compiler		IDE: N/A	Compiler: 
+
+		
 bits 32
 section .data
 	;init data definitions here
