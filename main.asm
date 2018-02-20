@@ -40,11 +40,22 @@ _start:
   
   ;A+(B+C) =D
   
-  mov	eax, 0h					;zero out the eax register
+  mov	eax,0h					;zero out the eax register
+  mov	eax,[varB]				;move varb into eax register
   
-  mov	al,[varA]				;move the single byte register into the ax subregister
-  mov	ax,[varB]				;we move the 2 byt value of varB in ax register
-  mov 	eax,[varC]
+  mov	ebx,0h					;zero out ebx register
+  mov	ebx,[varC]				;mov varc into ebx register
+  
+  mov	edx,0h					;zero out edx register
+  mov	edx,[varA]				;mov varA into edx register
+  
+  add	eax,ebx					;add ebx -> eax
+  
+  add	eax,edx					;add value of edx -> eax
+  
+  ;mov	al,[varA]				;move the single byte register into the ax subregister
+  ;mov	eax,[varB]				;we move the 2 byt value of varB in ax register
+  ;mov 	ebx,[varC]
   ;mov	ebx,0h					;we need to zero out the ebx register since varC & D ar 4 bytes
   ;mov	ebx,[varC]				;mov the value of varC into the ebx register
   
@@ -52,9 +63,6 @@ _start:
   
   ;add 	eax,al
   
-  add	eax,ax					;add ax [varC] to eax [varB]
-  
-  add 	eax,al					;add [var1] to eax
   
 								
   					
