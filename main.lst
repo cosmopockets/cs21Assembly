@@ -132,37 +132,95 @@
    132                                  section .data
    133                                    ;Initialized data definitions go here
    134                                    
-   135 00000000 77656C636F6D652074-       welcomePrompt		db		"welcome to my program", 0dh, 0ah, 0h
-   136 00000009 6F206D792070726F67-
-   137 00000012 72616D0D0A00       
-   138 00000018 456E74657220616E20-       inputPrompt		db		"Enter an unsigned int:", 0h
-   139 00000021 756E7369676E656420-
-   140 0000002A 696E743A00         
-   141                                  
-   142                                  section .bss
-   143                                    ;Uninitialized memory reservations go here
-   144                                  
-   145                                  section .text
-   146                                  
-   147                                  global _start
-   148                                  _start:
-   149 00000000 90                        nop
-   150                                    ;Code starts here
-   151                                    
-   152 00000001 68[00000000]              push		welcomePrompt
-   153 00000006 E8(00000000)              call		PrintString
-   154 0000000B E8(00000000)              call		Printendl
-   155                                    
-   156 00000010 68[18000000]              push		inputPrompt
-   157 00000015 E8(00000000)              call		PrintString 
-   158 0000001A E8(00000000)              call		InputUInt
-   159 0000001F E8(00000000)              call		Printendl
-   160                                    
-   161 00000024 E8(00000000)              call 		PrintRegisters
-   162                                    
-   163                                  
-   164                                    ;Code ends here
-   165 00000029 90                        nop
-   166 0000002A B801000000                mov eax,1 ; Exit system call value
-   167 0000002F BB00000000                mov ebx,0 ; Exit return code
-   168 00000034 CD80                      int 80h ; Call the kernel
+   135                                  ;  welcomePrompt		db		"This asm program will do the following A+(B+C)=D & (A+C)-B=D", 0dh, 0ah, 0h
+   136                                  	
+   137 00000000 10                      	varA				db		10h				;this is the single byte variable
+   138 00000001 0020                    	varB				dw		2000h			;this is the word variable
+   139 00000003 00000300                	varC				dd		30000h			;this is the variable for the double word
+   140                                  	
+   141 00000007 412B28422B43293D44-     	str1				db		"A+(B+C)=D A=10, B=2000, C=30000 D=32010",0h
+   142 00000010 20413D31302C20423D-
+   143 00000019 323030302C20433D33-
+   144 00000022 3030303020443D3332-
+   145 0000002B 30313000           
+   146 0000002F 28412B43292D423D44-     	str2				db		"(A+C)-B=D	D=2E010",0h
+   147 00000038 09443D324530313000 
+   148                                      
+   149                                  
+   150                                  section .bss
+   151                                    ;Uninitialized memory reservations go here
+   152                                    
+   153 00000000 <res 00000010>            varD		resd		4	
+   154                                  
+   155                                  section .text
+   156                                  
+   157                                  global _start
+   158                                  _start:
+   159 00000000 90                        nop
+   160                                    ;Code starts here
+   161                                    
+   162                                  ;  push		welcomePrompt
+   163                                  ;  call		PrintString
+   164                                  ;  call		Printendl
+   165                                    
+   166                                    
+   167                                  	;call 		
+   168                                  	
+   169                                  	;push DWORD[varD]			;put the number onto the stack
+   170                                  	;call Print32bitNumDecimal	;prints the number in the stack as hex-dec
+   171                                  	;call Printendl
+   172                                  	
+   173                                    
+   174                                  	;A+(B+C) =D
+   175                                    
+   176 00000001 B800000000              	mov	eax,0h					;zero out the eax register
+   177 00000006 A1[01000000]            	mov	eax,[varB]				;move varb into eax register
+   178                                    
+   179 0000000B BB00000000              	mov	ebx,0h					;zero out ebx register
+   180 00000010 8B1D[03000000]          	mov	ebx,[varC]				;mov varc into ebx register
+   181                                    
+   182 00000016 BA00000000              	mov	edx,0h					;zero out edx register
+   183 0000001B 8B15[00000000]          	mov	edx,[varA]				;mov varA into edx register
+   184                                    
+   185 00000021 01D8                    	add	eax,ebx					;add ebx -> eax
+   186                                    
+   187 00000023 83C010                  	add	eax,10h					;add value of edx -> eax
+   188                                  	
+   189 00000026 68[07000000]            	push str1
+   190 0000002B E8(00000000)            	call PrintString
+   191 00000030 FF35[00000000]          	push DWORD[varD]
+   192 00000036 E8(00000000)            	call Print32bitNumDecimal
+   193 0000003B E8(00000000)            	call Printendl
+   194                                    
+   195                                  	;next we need to complete (A+C)-B=D
+   196                                  	
+   197 00000040 B800000000              	mov eax,0h					;zero eax register
+   198 00000045 A1[03000000]            	mov eax,[varC]				;mov varC into eax register
+   199 0000004A 83C010                  	add	eax,10h					;add 10hex to eax register
+   200                                  	
+   201 0000004D BB00000000              	mov	ebx,0h					;zero out ebx register
+   202 00000052 8B1D[01000000]          	mov	ebx,[varB]				;mov varB into ebx register
+   203                                  	
+   204 00000058 29D8                    	sub eax,ebx					;we are going to subtract ebx register from eax register
+   205                                  	
+   206                                  	;mov [varD],0h				;zero out varD with 0-hexadecimals
+   207 0000005A A1[00000000]            	mov eax,[varD]				;move [varD] into the eax register
+   208                                  	
+   209                                  	
+   210 0000005F 68[07000000]            	push str1
+   211 00000064 E8(00000000)            	call PrintString
+   212 00000069 FF35[00000000]          	push DWORD[varD]
+   213 0000006F E8(00000000)            	call Print32bitNumDecimal
+   214 00000074 E8(00000000)            	call Printendl
+   215                                  	
+   216                                  	
+   217                                  	
+   218                                    
+   219                                    
+   220                                  								
+   221                                    					
+   222                                    ;Code ends here
+   223 00000079 90                        nop
+   224 0000007A B801000000                mov eax,1 ; Exit system call value
+   225 0000007F BB00000000                mov ebx,0 ; Exit return code
+   226 00000084 CD80                      int 80h ; Call the kernel
