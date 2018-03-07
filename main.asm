@@ -19,37 +19,45 @@ bits 32
 section .data 
   ;Initialized data definitions go here 
   
-	welcomePrompt    db    "welcome to my program", 0dh, 0ah, 00h 
+	welcomePrompt    db    "welcome to my program", 0dh, 0ah, 0h 
 	
    
-	openPrompt  db  "Program start", 0ah,  0dh,  00h 
+	openPrompt		db  "Program start", 0ah,  0dh,  0h 
 		.len	equ	($-openPrompt)
-	closePrompt  db  "Program ending",0ah,  0dh,  00h 
+		
+		
+	closePrompt		db  "Program ending",0ah,  0dh,  0h 
 		.len  equ  ($-closePrompt) 
 		
 		
-	part1Preview	db	"This program will add up two byte arrays and print them in reverse order", 0ah,	0dh,	00h 
+	part1Preview	db	"This program will add up two byte arrays and print them in reverse order", 0ah,	0dh,	0h 
 						
-	part2Preview	db	"This program will add up two double word array and store them in array6 printing them in first order", 0ah,	0dh,	00h
+	part2Preview	db	"This program will add up two double word array and store them in array6 printing them in first order", 0ah,	0dh,	0h
 						
 		
-	array3String	db	"Contents of Array 3 are: ",0ah,	0dh,	00h
+	array3String	db	"Contents of Array 3 are: ",0ah,	0dh,	0h
 	
-	array6String	db	"Contents of array6 are: ",0ah,	0dh,	00h
+	array6String	db	"Contents of array6 are: ",0ah,		0dh,	0h
      
      
-	array1 db    10h, 30h, 0f0h, 20h, 50h, 12h 
+	array1			db    10h, 30h, 0f0h, 20h, 50h, 12h 
 		.len equ ($-array1) 
-	array2 db    0e0h, 40h, 22h, 0e5h, 40h, 55h 
+		
+	array2			db    0e0h, 40h, 22h, 0e5h, 40h, 55h 
 		.len equ ($-array2) 
-	array3 db    0h,0h,0h,0h,0h,0h 
+		
+	array3			db    0h,0h,0h,0h,0h,0h 
 		.len equ ($-array3) 
+		
+		
    
-	array4 dd    11BDh, 3453h, 2FF0h, 6370h, 3350h, 1025h
+	array4 			dd    11BDh, 3453h, 2FF0h, 6370h, 3350h, 1025h
 		.len equ ($-array4)
-	array5 dd    0FFFh, 0C3Fh, 22FFh, 0EF53h, 400h, 5555h   
+		
+	array5 			dd    0FFFh, 0C3Fh, 22FFh, 0EF53h, 400h, 5555h   
 		.len equ ($-array5)
-	array6 dd    0000h, 0000h, 0000h, 0000h, 0000h, 0000h 
+		
+	array6 			dd    0000h, 0000h, 0000h, 0000h, 0000h, 0000h 
 		.len equ ($-array6)
    
  
@@ -75,20 +83,20 @@ _start:
 	call	PrintString
 	call	Printendl
 
-  mov edx, array3			;mov array3 into the edx register
+  mov edx, 			array3			;mov array3 into the edx register
  ; mov edx, 6  				;mov the size of the array inot edx register
-  mov esi, array1 			;mov the address of array1 into esi
-  mov edi, array2 			;mov the address of array2 into edi 
-  mov ecx, 6 				;the counter register is 6 
+  mov esi, 			array1 			;mov the address of array1 into esi
+  mov edi, 			array2 			;mov the address of array2 into edi 
+  mov ecx, 			6 				;the counter register is 6 
 							;because the array size is 6
        
    
     L1: 
-        mov ah, [esi]		;dereference array1 and mov into ah
-        mov	al, [edi] 		;dereference array2 and mov into al
+        mov ah, 	[esi]		;dereference array1 and mov into ah
+        mov	al, 	[edi] 		;dereference array2 and mov into al
          
-        add ah,al 			;add first element together
-        mov [edx],ah 		;store in the address of array3
+        add ah,		al 			;add first element together
+        mov	[edx],	ah 		;store in the address of array3
          
         inc esi 			;increment the "index" of the array1 by 1
         inc edi 			;increment the "index" of array2 by 1
@@ -106,22 +114,22 @@ _start:
     call	Printendl
      
  
-  mov edx, array6 			;store the addition of array4 & array5
-  mov esi, array4 			;mov array4 into esi register
-  mov edi, array5 			;mov array5 into edi register
+	mov edx, 			array6 			;store the addition of array4 & array5
+	mov esi, 			array4 			;mov array4 into esi register
+	mov edi, 			array5 			;mov array5 into edi register
    
-  mov ecx, 6 				;the counter is 6 
+	mov ecx, 6 				;the counter is 6 
 							;because the size of the array is 6
    
  
     L2: 
-      mov ebx, [edi] 		;mov the derefernece address of array5 in ebx
-      add eax, edx 			;add 
-      mov [edx], eax 
+      mov ebx, 			[edi] 		;mov the derefernece address of array5 in ebx
+      add eax, 			edx 			;add 
+      mov [edx], 		eax 
        
-      add esi, 4			;we inc by four because that is the size of DD 
-      add edi, 4 			;we inc by four because that is the size
-      add edx, 4 			;we inc by four because that is the size
+      add esi, 			4			;we inc by four because that is the size of DD 
+      add edi, 			4 			;we inc by four because that is the size
+      add edx, 			4 			;we inc by four because that is the size
     Loop L2 
    
   ;Code ends here
