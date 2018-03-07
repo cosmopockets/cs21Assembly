@@ -19,13 +19,23 @@ bits 32
 section .data 
   ;Initialized data definitions go here 
   
-	welcomePrompt    db    "welcome to my program", 0dh, 0ah, 0h 
+	welcomePrompt    db    "welcome to my program", 0dh, 0ah, 00h 
 	
    
 	openPrompt  db  "Program start", 0ah,  0dh,  00h 
 		.len	equ	($-openPrompt)
 	closePrompt  db  "Program ending",0ah,  0dh,  00h 
 		.len  equ  ($-closePrompt) 
+		
+		
+	part1Preview	db	"This program will add up two byte arrays and print them in reverse order", 0ah,	0dh,	00h 
+						
+	part2Preview	db	"This program will add up two double word array and store them in array6 printing them in first order", 0ah,	0dh,	00h
+						
+		
+	array3String	db	"Contents of Array 3 are: ",0ah,	0dh,	00h
+	
+	array6String	db	"Contents of array6 are: ",0ah,	0dh,	00h
      
      
 	array1 db    10h, 30h, 0f0h, 20h, 50h, 12h 
@@ -60,9 +70,13 @@ _start:
 	call	PrintString
 	call	Printendl
   ;code here 
+  
+	push	part1Preview
+	call	PrintString
+	call	Printendl
 
   mov edx, array3			;mov array3 into the edx register
-  mov edx, 6  				;mov the size of the array inot edx register
+ ; mov edx, 6  				;mov the size of the array inot edx register
   mov esi, array1 			;mov the address of array1 into esi
   mov edi, array2 			;mov the address of array2 into edi 
   mov ecx, 6 				;the counter register is 6 
@@ -70,8 +84,8 @@ _start:
        
    
     L1: 
-        mov  ah, [esi]		;dereference array1 and mov into ah
-        mov al, [edi] 		;dereference array2 and mov into al
+        mov ah, [esi]		;dereference array1 and mov into ah
+        mov	al, [edi] 		;dereference array2 and mov into al
          
         add ah,al 			;add first element together
         mov [edx],ah 		;store in the address of array3
@@ -80,6 +94,16 @@ _start:
         inc edi 			;increment the "index" of array2 by 1
         dec edx 			;this is how you print it in reverse order
     Loop L1 
+    
+    
+    call	array3String
+    call	PrintString
+    call	Printendl
+    
+    
+    call	part2Preview
+    call	PrintString
+    call	Printendl
      
  
   mov edx, array6 			;store the addition of array4 & array5
